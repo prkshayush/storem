@@ -1,18 +1,35 @@
 package com.icici.FirstRestApiApplication.controllers;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+
+import com.icici.FirstRestApiApplication.entities.StoredFile;
+import com.icici.FirstRestApiApplication.repos.FileRepository;
 
 @RestController
-@RequestMapping("/api/files")
 public class FileController {
 
-    @PostMapping("/upload")
-    public String uploadFile() {
-        return "Upload file API";
+    @Autowired
+    FileRepository fileRepository;
+
+    @PostMapping("/files")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void addFiles(@RequestBody List<StoredFile> files) {
+        fileRepository.saveAll(files);
     }
 
-    @GetMapping
-    public String getFiles() {
-        return "Get all files API";
+    @GetMapping("/files")
+    public List<StoredFile> fetchAllFiles() {
+        return fileRepository.findAll();
     }
+
+    @GetMapping("/files/{id}")
+    public StoredFile fetchAFile(@PathVariable("id") Long id) {
+        return fileRepository.findById(id).orElse(null);
+    }
+    
+
 }

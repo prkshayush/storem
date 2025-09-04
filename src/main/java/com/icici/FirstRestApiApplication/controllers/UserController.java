@@ -2,6 +2,7 @@ package com.icici.FirstRestApiApplication.controllers;
 
 import com.icici.FirstRestApiApplication.repos.UserRepository;
 import com.icici.FirstRestApiApplication.entities.Label;
+import com.icici.FirstRestApiApplication.entities.StoredFile;
 import com.icici.FirstRestApiApplication.entities.User;
 
 import java.util.List;
@@ -90,6 +91,34 @@ public class UserController {
 
         user.getLabels().add(label);
         userRepository.save(user);
+    }
+    @GetMapping("/users/{id}/labels")
+    public List<Label> getUserLabels(@PathVariable("id") Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with id " + userId));
+
+        return user.getLabels();
+    }
+    @GetMapping("/users/{id}/labels/{labelId}/files")
+    public List getFilesInUserLabel(@PathVariable("id") Long userId, @PathVariable("labelId") Long labelId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with id " + userId));
+
+        Label label = user.getLabels().stream()
+                .filter(l -> l.getId().equals(labelId))
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Label not found with id " + labelId + " for user with id " + userId));
+
+        return label.getStoredFiles();
+    }
+    @GetMapping("/users/{id}/files")
+    public List<StoredFile> fetchFilesFromUserId(@PathVariable("id") Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with id " + userId));
+
+        return user.getLabels().stream()
+                .flatMap(label -> label.getStoredFiles().stream())
+                .toList();
     }
     
 }
