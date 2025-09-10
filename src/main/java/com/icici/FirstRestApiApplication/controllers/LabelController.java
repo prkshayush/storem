@@ -13,9 +13,8 @@ import com.icici.FirstRestApiApplication.repos.LabelRepository;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
-
 @RestController
+@CrossOrigin
 public class LabelController {
 
     @Autowired
@@ -27,16 +26,15 @@ public class LabelController {
     }
 
     @GetMapping("/labels/{id}")
-    public Label fetchLabel(@PathVariable ("id") Long id) {
+    public Label fetchLabel(@PathVariable("id") Long id) {
         return labelRepository.findById(id)
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Label not found with id " + id));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Label not found with id " + id));
     }
-    
 
     @PostMapping("/labels")
     @ResponseStatus(HttpStatus.CREATED)
     public void addLabel(@RequestBody Label label) {
-       labelRepository.save(label);
+        labelRepository.save(label);
     }
 
     @DeleteMapping("/labels/{id}")
@@ -57,6 +55,7 @@ public class LabelController {
 
         return labelRepository.save(existingLabel);
     }
+
     @PostMapping("/labels/{id}/files")
     public void addFileToLabel(@PathVariable("id") Long id, @RequestBody StoredFile file) {
         Label label = labelRepository.findById(id)
@@ -64,9 +63,7 @@ public class LabelController {
 
         label.getStoredFiles().add(file);
         labelRepository.save(label);
-        
-       
-    }
-    
-}
 
+    }
+
+}

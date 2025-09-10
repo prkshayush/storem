@@ -10,6 +10,7 @@ import com.icici.FirstRestApiApplication.entities.StoredFile;
 import com.icici.FirstRestApiApplication.repos.FileRepository;
 
 @RestController
+@CrossOrigin
 public class FileController {
 
     @Autowired
@@ -30,6 +31,5 @@ public class FileController {
     public StoredFile fetchAFile(@PathVariable("id") Long id) {
         return fileRepository.findById(id).orElse(null);
     }
-    
 
 }
