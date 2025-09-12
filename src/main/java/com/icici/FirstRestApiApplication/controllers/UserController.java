@@ -75,13 +75,6 @@ public class UserController {
         return userRepository.save(existingUser);
     }
 
-    @PutMapping("users/{id}")
-    public String putMethodName(@PathVariable String id, @RequestBody String entity) {
-        // TODO: process PUT request
-
-        return entity;
-    }
-
     @PostMapping("/users/{id}/labels")
     public void addLabelToUser(@PathVariable("id") Long userId, @RequestBody Label label) {
         User user = userRepository.findById(userId)
@@ -154,7 +147,7 @@ public PasswordEntry fetchApasswordById(
                     HttpStatus.NOT_FOUND,
                     "Password entry not found with id " + passwordId + " for user with id " + userId));
 
-    // ✅ Decrypt the password before returning
+    // decrypt the password before returning
     String decryptedPassword = passwordService.getDecryptedPassword(passwordEntry.getId());
     passwordEntry.setPassword(decryptedPassword);
 

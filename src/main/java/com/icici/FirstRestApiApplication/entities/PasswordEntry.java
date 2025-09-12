@@ -3,8 +3,6 @@ package com.icici.FirstRestApiApplication.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Data
 @Entity
 public class PasswordEntry {
@@ -13,8 +11,8 @@ public class PasswordEntry {
     private Long id;
     private String title;
     private String username;
-    @JsonIgnore
-    private String Password;
+    // @JsonIgnore
+    private String password;
     // private LocalDateTime createdAt = LocalDateTime.now();
 
     // @ManyToOne
