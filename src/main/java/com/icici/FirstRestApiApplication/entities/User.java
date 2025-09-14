@@ -23,9 +23,6 @@ public class User {
     List<Label> labels;
 
     @OneToMany(cascade = CascadeType.ALL)
-    List<StoredFile> storedFiles;
-
-    @OneToMany(cascade = CascadeType.ALL)
     List<PasswordEntry> passwordEntries;
 
 }
